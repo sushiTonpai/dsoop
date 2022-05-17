@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class ArrayDeque<T> {
     private T[] items;
 
-//    getter
+    //    getter
     public T[] getItems() {
         return items;
     }
@@ -31,21 +31,21 @@ public class ArrayDeque<T> {
     public ArrayDeque() {
         circSize = 3;
         items = (T[]) new Object[circSize];
-        end = 0;
-        start = 0;
+        end = -1;
+        start = -1;
     }
 
     //    deep copy
     public ArrayDeque(ArrayDeque<T> other) {
         items = (T[]) new Object[other.circSize];
-        System.arraycopy(other.items,0,items,0,other.circSize);
+        System.arraycopy(other.items, 0, items, 0, other.circSize);
         end = other.end;
         start = other.start;
     }
 
     //    check array condition
     public boolean isEmpty() {
-        return (end == 0 && start == 0);
+        return (end == -1 && start == -1);
     }
 
     public boolean isFull() {
@@ -58,6 +58,12 @@ public class ArrayDeque<T> {
         System.arraycopy(items, 0, expand, 0, circSize);
         items = expand;
     }
+
+//    private void grow_front(int newCap) {
+//        T[] expand = (T[]) new Object[newCap];
+//        System.arraycopy(items, 0, expand, 0, circSize);
+//        items = expand;
+//    }
 
 
     public int size() {
@@ -79,42 +85,59 @@ public class ArrayDeque<T> {
             grow(2 * circSize);
             circSize = circSize * 2;
         }
+        if (this.isEmpty()) {
+            start = 0;
+            end = 0;
+        } else {
+            end = (end + 1) % circSize;
+        }
         items[end] = item;
-        end = (end + 1) % circSize;
         System.out.println(Arrays.toString(items));
     }
 
     public void addFirst(T item) {
         if (this.isFull()) {
             grow(2 * circSize);
-            end = circSize;
+//            end = circSize;
             circSize = circSize * 2;
-
         }
-        if (start == 0) {
+        if (this.isEmpty()) {
+            start = 0;
+            end = 0;
+        } else if (start == 0) {
             start = circSize - 1;
-        } else {
+        } else
             start--;
-        }
         items[start] = item;
         System.out.println(Arrays.toString(items));
     }
 
     public T removeLast() {
-        T out = items[end];
-        items[end] = null;
-        if (end == 0) {
-            end = circSize - 1;
-        } else {
-            end--;
+        if (this.isEmpty()) {
+            return null;
         }
+        T out = items[end];
+        if (start == end) {
+            start--;
+            end--;
+        } else if (end == 0) {
+            end = circSize - 1;
+        } else
+            end--;
         return out;
     }
 
     public T removeFirst() {
+        if (this.isEmpty()) {
+            return null;
+        }
         T out = items[start];
-        items[start] = null;
-        start = (start + 1) % circSize;
+        if (start == end) {
+            start--;
+            end--;
+        } else {
+            start = (start + 1) % circSize;
+        }
         return out;
     }
 
@@ -124,14 +147,10 @@ public class ArrayDeque<T> {
         int pointer = start;
         while (pointer != end) {
             System.out.println("String:Index" + pointer);
-            int next_pointer = (pointer + 1) % circSize;
-            if (next_pointer == end) {
-                out = out + items[pointer];
-            } else {
                 out = out + items[pointer] + ", ";
-            }
             pointer = (pointer + 1) % circSize;
         }
+        out += items[pointer];
         return out;
     }
 
@@ -153,12 +172,12 @@ public class ArrayDeque<T> {
 //        ad.addFirst(4);
 //        ad.addLast(8);
 //        ad.addLast(22);
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 3; i++) {
             ad.addLast(i);
         }
 //        System.out.println(ad.isEmpty());
         System.out.println(ad.size());
-//        System.out.println(ad);
+        System.out.println(ad);
 
     }
 }
