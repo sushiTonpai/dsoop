@@ -53,6 +53,5 @@ public class MissingTile {
         }
     }
 
-    public static void main(String[] args) {
-    }
+
 }

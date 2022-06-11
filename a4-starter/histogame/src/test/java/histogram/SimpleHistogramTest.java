@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Iterator;
 
 
-/* TODO: Uncomment me when you're done implementing the class
 public class SimpleHistogramTest {
 
     @Test
@@ -26,4 +25,3 @@ public class SimpleHistogramTest {
         assertEquals(4, h.getTotalCount());
     }
 }
- */

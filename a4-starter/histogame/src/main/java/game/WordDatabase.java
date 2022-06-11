@@ -1,5 +1,6 @@
 package game;
 
+import java.io.InputStream;
 import java.util.List;
 
 // HINT(s):
@@ -7,6 +8,7 @@ import java.util.List;
 //   InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
 
 public class WordDatabase implements IDatabase {
+    InputStream is = getClass().getClassLoader().getResourceAsStream("linuxwords.txt");
     @Override
     public void add(Word w) {
         // TODO:
